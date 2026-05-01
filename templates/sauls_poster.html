@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}{{ username }} — Saul's Board{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <div>
+    <h3>{{ username }}</h3>
+    {% if latest %}
+      <span class="text-secondary">Viimeisin: {{ latest.period }}</span>
+      {% if latest.ytd_return is not none %}
+        &nbsp;·&nbsp;
+        <span class="fw-bold {% if latest.ytd_return >= 0 %}ytd-positive{% else %}ytd-negative{% endif %}">
+          YTD {{ "%+.1f"|format(latest.ytd_return) }}%
+        </span>
+      {% endif %}
+    {% endif %}
+  </div>
+  <a href="/sauls" class="btn btn-outline-secondary btn-sm">← Saul's Board</a>
+</div>
+
+{% if latest and latest.narrative %}
+<div class="analysis-box rounded mb-4">{{ latest.narrative }}</div>
+{% endif %}
+
+{% if changes %}
+<h5 class="mb-3">Muutokset {{ prev_period }} → {{ latest.period }}</h5>
+<div class="row g-3 mb-4">
+  {% set groups = {'NEW': [], 'INCREASE': [], 'DECREASE': [], 'EXIT': []} %}
+  {% for c in changes %}{% if c.change_type == 'NEW' %}{% set _ = groups['NEW'].append(c) %}{% elif c.change_type == 'INCREASE' %}{% set _ = groups['INCREASE'].append(c) %}{% elif c.change_type == 'DECREASE' %}{% set _ = groups['DECREASE'].append(c) %}{% else %}{% set _ = groups['EXIT'].append(c) %}{% endif %}{% endfor %}
+
+  {% for change_type, label, badge_class in [('NEW','Uudet','badge-new'),('INCREASE','Lisäykset','badge-increase'),('DECREASE','Vähennykset','badge-decrease'),('EXIT','Exitit','badge-exit')] %}
+  {% if groups[change_type] %}
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header"><span class="badge {{ badge_class }}">{{ label }}</span></div>
+      <div class="card-body p-0">
+        <table class="table table-dark table-hover mb-0">
+          <tbody>
+          {% for c in groups[change_type]|sort(attribute='pct_delta', reverse=true) %}
+          <tr>
+            <td>{{ c.ticker }}{% if c.name %} <span class="text-secondary small">{{ c.name }}</span>{% endif %}</td>
+            <td class="text-end pct-cell">
+              {% if change_type == 'NEW' %}{{ "%.1f"|format(c.pct_new) }}%
+              {% elif change_type == 'EXIT' %}—
+              {% else %}{% if c.pct_delta > 0 %}+{% endif %}{{ "%.1f"|format(c.pct_delta) }}pp → {{ "%.1f"|format(c.pct_new) }}%
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<h5 class="mb-3">Kaikki omistukset</h5>
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-dark table-hover mb-0">
+      <thead><tr><th>Ticker</th><th>Yhtiö</th><th class="text-end">Osuus</th></tr></thead>
+      <tbody>
+      {% for h in holdings %}
+      <tr>
+        <td><strong>{{ h.ticker }}</strong></td>
+        <td class="text-secondary">{{ h.name or "—" }}</td>
+        <td class="text-end pct-cell">{{ "%.1f"|format(h.pct) }}%</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h5 class="mt-4 mb-3">Historia</h5>
+<div class="row g-3">
+  {% for p in all_portfolios %}
+  <div class="col-md-3">
+    <div class="card {% if p.id == latest.id %}border-primary{% endif %}">
+      <div class="card-body">
+        <div class="fw-bold">{{ p.period }}</div>
+        {% if p.ytd_return is not none %}
+          <span class="{% if p.ytd_return >= 0 %}ytd-positive{% else %}ytd-negative{% endif %}">
+            {{ "%+.1f"|format(p.ytd_return) }}%
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

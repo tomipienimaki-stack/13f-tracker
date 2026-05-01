@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: 13f-tracker
+    runtime: python
+    buildCommand: pip install -e .
+    startCommand: gunicorn "src.web:app" --bind 0.0.0.0:$PORT
+    envVars:
+      - key: EDGAR_USER_AGENT
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: NOTIFY_EMAIL
+        sync: false
+      - key: DATA_DIR
+        value: /data
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1

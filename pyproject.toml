@@ -1,0 +1,30 @@
+[project]
+name = "13f-tracker"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.40",
+    "requests>=2.31",
+    "lxml>=5.0",
+    "beautifulsoup4>=4.12",
+    "pandas>=2.2",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "slack-sdk>=3.27",
+    "schedule>=1.2",
+    "xmltodict>=0.13",
+    "flask>=3.0",
+    "gunicorn>=22.0",
+]
+
+[project.scripts]
+tracker = "src.tracker:main"
+scanner = "src.scanner:main"
+letters = "src.letters:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

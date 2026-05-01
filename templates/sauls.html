@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Saul's Board — 13F Tracker{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3>Saul's Investing Discussions</h3>
+  <a href="/" class="btn btn-outline-secondary btn-sm">← Takaisin</a>
+</div>
+
+<div class="row g-3 mb-5">
+  {% for poster in posters %}
+  <div class="col-md-4">
+    <a href="/sauls/{{ poster.username }}" class="text-decoration-none">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between">
+          <strong>{{ poster.username }}</strong>
+          {% if poster.ytd_return is not none %}
+            <span class="fw-bold {% if poster.ytd_return >= 0 %}ytd-positive{% else %}ytd-negative{% endif %}">
+              YTD {{ "%+.1f"|format(poster.ytd_return) }}%
+            </span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <div class="text-secondary small mb-2">{{ poster.latest_period }}</div>
+          {% if poster.top3 %}
+            {% for h in poster.top3 %}
+              <div class="d-flex justify-content-between small">
+                <span>{{ h.ticker }}{% if h.name %} <span class="text-secondary">{{ h.name }}</span>{% endif %}</span>
+                <span class="pct-cell">{{ "%.1f"|format(h.pct) }}%</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+<h5 class="mb-3">Omistusvertailu</h5>
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-dark table-hover mb-0">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Yhtiö</th>
+          {% for p in posters %}<th class="text-end">{{ p.username }}</th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in comparison %}
+        <tr>
+          <td><strong>{{ row.ticker }}</strong></td>
+          <td class="text-secondary">{{ row.name }}</td>
+          {% for p in posters %}
+            <td class="text-end pct-cell">
+              {% if row[p.username] %}{{ "%.1f"|format(row[p.username]) }}%{% else %}<span class="text-secondary">—</span>{% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

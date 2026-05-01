@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}13F Tracker — Etusivu{% endblock %}
+{% block content %}
+
+<h4 class="mb-4 text-secondary">Institutionaaliset sijoittajat</h4>
+<div class="row g-3 mb-5">
+  {% for inv in investors %}
+  <div class="col-md-4">
+    <a href="/investor/{{ inv.cik }}" class="text-decoration-none">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <strong>{{ inv.name }}</strong>
+          <span class="text-secondary small">{{ inv.company }}</span>
+        </div>
+        <div class="card-body">
+          {% if inv.latest_period %}
+            <div class="text-secondary small mb-2">Viimeisin: {{ inv.latest_period }}</div>
+            <div class="d-flex gap-2 flex-wrap">
+              {% if inv.new_count %}<span class="badge badge-new">{{ inv.new_count }} uutta</span>{% endif %}
+              {% if inv.increase_count %}<span class="badge badge-increase">{{ inv.increase_count }} lisäystä</span>{% endif %}
+              {% if inv.decrease_count %}<span class="badge badge-decrease">{{ inv.decrease_count }} vähennystä</span>{% endif %}
+              {% if inv.exit_count %}<span class="badge badge-exit">{{ inv.exit_count }} exitiä</span>{% endif %}
+              {% if not inv.new_count and not inv.increase_count and not inv.decrease_count and not inv.exit_count %}
+                <span class="text-secondary small">Ei muutoksia</span>
+              {% endif %}
+            </div>
+          {% else %}
+            <span class="text-secondary small">Ei dataa</span>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+<h4 class="mb-4 text-secondary">Saul's Investing Discussions</h4>
+<div class="row g-3">
+  {% for poster in sauls_posters %}
+  <div class="col-md-4">
+    <a href="/sauls/{{ poster.username }}" class="text-decoration-none">
+      <div class="card h-100">
+        <div class="card-header">
+          <strong>{{ poster.username }}</strong>
+        </div>
+        <div class="card-body">
+          {% if poster.latest_period %}
+            <div class="text-secondary small mb-2">{{ poster.latest_period }}</div>
+            {% if poster.ytd_return is not none %}
+              <span class="fw-bold {% if poster.ytd_return >= 0 %}ytd-positive{% else %}ytd-negative{% endif %}">
+                YTD {{ "%+.1f"|format(poster.ytd_return) }}%
+              </span>
+            {% endif %}
+            {% if poster.narrative %}
+              <p class="text-secondary small mt-2 mb-0" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">
+                {{ poster.narrative }}
+              </p>
+            {% endif %}
+          {% else %}
+            <span class="text-secondary small">Ei dataa</span>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

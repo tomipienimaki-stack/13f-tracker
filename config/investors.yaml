@@ -1,0 +1,65 @@
+investors:
+  - name: "Warren Buffett"
+    company: "Berkshire Hathaway"
+    cik: "0001067983"
+    strategy: "value_quality_longterm"
+    active: true
+    letter_url: "https://www.berkshirehathaway.com/letters/{year}ltr.pdf"
+    letter_years: [2024, 2023, 2022]
+    notes: "Korkea konsentraatio, vähän liikkeitä. Apple iso paino."
+
+  - name: "Bill Ackman"
+    company: "Pershing Square Capital"
+    cik: "0001336528"
+    strategy: "activist_concentrated"
+    active: true
+    notes: "8-12 osaketta. Quarterly letters julkisia."
+
+  - name: "Terry Smith"
+    company: "Fundsmith LLP"
+    cik: "0001569205"
+    strategy: "quality_compounders"
+    active: true
+    notes: "UK-pohjainen, mutta US-omistukset 13F:ssä."
+
+  - name: "Chase Coleman"
+    company: "Tiger Global Management"
+    cik: "0001167483"
+    strategy: "growth_tech"
+    active: false
+    notes: "Aggressiivinen kasvustrategia."
+
+  - name: "Seth Klarman"
+    company: "Baupost Group"
+    cik: "0001061165"
+    strategy: "deep_value_contrarian"
+    active: false
+    notes: "Harvinaiset, mutta hyvin perustellut liikkeet."
+
+  - name: "David Tepper"
+    company: "Appaloosa Management"
+    cik: "0001656456"
+    strategy: "macro_value"
+    active: false
+    notes: "Reagoi nopeasti makrolla."
+
+  - name: "Stanley Druckenmiller"
+    company: "Duquesne Family Office"
+    cik: "0001536411"
+    strategy: "macro_concentrated"
+    active: true
+    notes: "Korkea hit rate isoilla makroliikkeillä."
+
+  - name: "Michael Burry"
+    company: "Scion Asset Management"
+    cik: "0001649339"
+    strategy: "contrarian_short"
+    active: true
+    notes: "Big Short. Varoitussignaaleja."
+
+  - name: "Li Lu"
+    company: "Himalaya Capital"
+    cik: "0001709323"
+    strategy: "value_asia"
+    active: false
+    notes: "Munger arvosti. Pieni mutta laadukas."
