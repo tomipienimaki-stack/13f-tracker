@@ -13,12 +13,16 @@ from src.web import app
 from src import database
 
 OUT_DIR = Path(__file__).parent / "docs"
+BASE_HREF = "/13f-tracker/"
 
 
 def write(rel_path: str, content: bytes) -> None:
     dest = OUT_DIR / rel_path.lstrip("/")
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_bytes(content)
+    html = content.decode("utf-8").replace(
+        "</head>", f'<base href="{BASE_HREF}"></head>', 1
+    )
+    dest.write_bytes(html.encode("utf-8"))
 
 
 def main() -> None:

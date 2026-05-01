@@ -6,7 +6,7 @@
 <div class="row g-3 mb-5">
   {% for inv in investors %}
   <div class="col-md-4">
-    <a href="/investor/{{ inv.cik }}" class="text-decoration-none">
+    <a href="investor/{{ inv.cik }}/" class="text-decoration-none">
       <div class="card h-100">
         <div class="card-header d-flex justify-content-between align-items-center">
           <strong>{{ inv.name }}</strong>
@@ -38,7 +38,7 @@
 <div class="row g-3">
   {% for poster in sauls_posters %}
   <div class="col-md-4">
-    <a href="/sauls/{{ poster.username }}" class="text-decoration-none">
+    <a href="sauls/{{ poster.username }}/" class="text-decoration-none">
       <div class="card h-100">
         <div class="card-header">
           <strong>{{ poster.username }}</strong>
