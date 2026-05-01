@@ -18,7 +18,7 @@ echo ""
 echo "=== Pushataan GitHubiin ==="
 git add docs/
 git diff --cached --quiet && echo "Ei muutoksia docs/:ssa, ohitetaan commit." || \
-  git commit -m "Update: $(date '+%Y-%m-%d')" && git push
+  git commit -m "Update: $(date '+%Y-%m-%d')" && git push origin main
 
 echo ""
 echo "Valmis."
